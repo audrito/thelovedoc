@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Love Doc</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Custom Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: '#FBF8F3',
+                        charcoal: '#262420',
+                        terracotta: '#B76A59',
+                        terracottaDark: '#995345',
+                        sage: '#E8EFE9',
+                        border: '#E8E1D7',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .font-serif {
+            font-family: 'Crimson Pro', serif;
+        }
+
+        ::selection {
+            background-color: #B76A59;
+            color: white;
+        }
+
+        @keyframes softFloatIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes softPulse {
+
+            0%,
+            100% {
+                opacity: 0.65;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
+
+        .animate-soft-in {
+            animation: softFloatIn 700ms ease-out both;
+        }
+
+        .animate-soft-pulse {
+            animation: softPulse 2.8s ease-in-out infinite;
+        }
+
+        .testimonial-text {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 6;
+            line-clamp: 6;
+            overflow: hidden;
+        }
+
+        .testimonial-viewport {
+            overflow: hidden;
+            touch-action: pan-y;
+            cursor: grab;
+        }
+
+        .testimonial-viewport:active {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen bg-[#FBF8F3] text-[#262420]">
+
+    <!-- Navigation -->
+    <nav
+        class="w-full py-4 px-6 md:px-12 flex justify-between items-center border-b border-[#E8E1D7]/50 sticky top-0 bg-[#FBF8F3]/95 backdrop-blur-sm z-50">
+        <div class="flex items-center gap-2">
+            <img src="https://kajabi-storefronts-production.kajabi-cdn.com/kajabi-storefronts-production/file-uploads/themes/2156834180/settings_images/7023f3a-0370-73e-b2e3-f061547e02a_transparent_logo.png"
+                alt="The Love Doc logo" class="w-8 h-8 rounded-full object-cover" />
+            <span class="font-serif text-lg tracking-wide font-medium">The Love Doc</span>
+        </div>
+
+        <!-- Desktop Nav -->
+        <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+            <a href="#method-section" onclick="scrollToSection(event, 'method-section')"
+                class="hover:text-[#B76A59] transition-colors">The Method</a>
+            <a href="#testimonials-section" onclick="scrollToSection(event, 'testimonials-section')"
+                class="hover:text-[#B76A59] transition-colors">Testimonials</a>
+            <a href="#about-section" onclick="scrollToSection(event, 'about-section')"
+                class="hover:text-[#B76A59] transition-colors">About</a>
+            <button onclick="scrollToCTA()"
+                class="px-5 py-2 rounded-full border border-[#B76A59] text-[#B76A59] hover:bg-[#B76A59] hover:text-white transition-all duration-300">
+                Book Consultation
+            </button>
+        </div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="md:hidden text-gray-600" onclick="toggleMenu()">
+            <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+            <svg id="close-icon" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu"
+        class="hidden fixed inset-0 bg-[#FBF8F3] z-40 flex-col items-center justify-center gap-8 md:hidden">
+        <a href="#method-section" onclick="closeMenu(); scrollToSection(event, 'method-section')"
+            class="text-xl font-serif">The Method</a>
+        <a href="#testimonials-section" onclick="closeMenu(); scrollToSection(event, 'testimonials-section')"
+            class="text-xl font-serif">Testimonials</a>
+        <a href="#about-section" onclick="closeMenu(); scrollToSection(event, 'about-section')"
+            class="text-xl font-serif">About</a>
+        <button onclick="closeMenu(); scrollToCTA();" class="px-8 py-3 bg-[#B76A59] text-white rounded-full text-lg">
+            Book Now
+        </button>
+    </div>
+
+    <!-- Hero Section -->
+    <header
+        class="relative pt-8 pb-12 md:pt-12 md:pb-20 px-6 md:px-12 lg:px-24 max-w-7xl mx-auto flex flex-col items-center text-center">
+
+        <!-- Social Proof Badge -->
+        <div
+            class="inline-flex items-center gap-2 bg-[#E8EFE9] px-4 py-1.5 rounded-full text-xs md:text-sm font-medium text-[#55695D] mb-6 md:mb-8 animate-soft-in">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span>Trusted by 220K+ Followers</span>
+        </div>
+
+        <!-- Headline -->
+        <h1
+            class="font-serif text-4xl md:text-5xl lg:text-6xl leading-[1.15] tracking-tight text-[#262420] max-w-4xl mb-5 md:mb-6 animate-soft-in">
+            Break The <span class="italic text-[#B76A59]">Anxious-Avoidant Loop</span> And Build A Secure Relationship
+            This Week
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="text-[15px] md:text-base leading-relaxed text-gray-600 max-w-2xl mb-7 md:mb-10 animate-soft-in">
+            Stuck in the same fight on repeat and nothing changes? In a 1:1 call, I'll guide you through the exact
+            steps to interrupt the conflict cycle, communicate without triggering shutdown/defensiveness, and rebuild
+            safety and connection so your relationship starts improving <strong>this week</strong>, not "someday."
+        </p>
+
+        <!-- CTA Block -->
+        <div class="flex flex-col items-center gap-2 md:gap-3 w-full max-w-md animate-soft-in">
+            <div class="text-center leading-tight mt-2 flex flex-col gap-1.5">
+                <p class="text-sm font-semibold text-[#262420]/80">Dr. Sarah Hensley</p>
+                <p class="text-xs text-gray-500">Relationship Coach, Doctor of Social Psychology</p>
+            </div>
+            <a href="https://courses.thelovedoc.com/coaching-menu"
+                class="w-full md:w-auto px-8 py-4 bg-[#B76A59] hover:bg-[#995345] text-white text-lg font-medium rounded-full shadow-lg shadow-[#B76A59]/20 transition-all duration-300 active:scale-[0.98] flex items-center justify-center gap-2"
+                data-umami-event="CTA Click - Hero Section">
+                Book a 1:1 call
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </a>
+
+
+            <!-- <p class="text-xs text-gray-400 mt-2 animate-soft-pulse">100% Confidential • Virtual Sessions via Zoom</p> -->
+        </div>
+    </header>
+
+    <!-- The Problem Section -->
+    <section class="py-12 md:py-16 px-6 bg-[#F8F4EE]">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-center font-serif text-2xl md:text-3xl mb-8 md:mb-12 text-[#262420]">
+                Does this sound like your relationship?
+            </h2>
+
+            <div class="grid md:grid-cols-3 gap-4 md:gap-6">
+                <div
+                    class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-[#E8E1D7] hover:shadow-md transition-shadow duration-300">
+                    <h3 class="font-serif text-xl mb-3 text-[#262420] flex items-center gap-3">
+                        <span
+                            class="bg-[#FBF8F3] w-10 h-10 rounded-full flex items-center justify-center border border-[#E8E1D7] shrink-0">
+                            <svg class="text-[#B76A59]" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 3v5h5"></path>
+                                <path d="M3.05 13a9 9 0 1 0 2.13-5.87L3 8"></path>
+                            </svg>
+                        </span>
+                        The Same Fight, On Repeat
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">You have the same argument over and over. You feel
+                        unheard, they feel criticized, and nothing ever gets resolved.</p>
+                </div>
+
+                <div
+                    class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-[#E8E1D7] hover:shadow-md transition-shadow duration-300">
+                    <h3 class="font-serif text-xl mb-3 text-[#262420] flex items-center gap-3">
+                        <span
+                            class="bg-[#FBF8F3] w-10 h-10 rounded-full flex items-center justify-center border border-[#E8E1D7] shrink-0">
+                            <svg class="text-[#B76A59]" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 3a6 6 0 0 0-6 6c0 3.5-2 5-2 5h16s-2-1.5-2-5a6 6 0 0 0-6-6"></path>
+                                <path d="M9 18a3 3 0 0 0 6 0"></path>
+                            </svg>
+                        </span>
+                        Walking on Eggshells
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">You're afraid to bring things up because it might
+                        trigger a shutdown or an explosion. The silence feels heavy.</p>
+                </div>
+
+                <div
+                    class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-[#E8E1D7] hover:shadow-md transition-shadow duration-300">
+                    <h3 class="font-serif text-xl mb-3 text-[#262420] flex items-center gap-3">
+                        <span
+                            class="bg-[#FBF8F3] w-10 h-10 rounded-full flex items-center justify-center border border-[#E8E1D7] shrink-0">
+                            <svg class="text-[#B76A59]" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                                </path>
+                            </svg>
+                        </span>
+                        Craving Connection
+                    </h3>
+                    <p class="text-gray-600 leading-relaxed text-sm">You love each other, but the emotional safety is
+                        gone. You want the 'old us' back, but don't know how to get there.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Authority Section -->
+    <section id="about-section"
+        class="py-12 md:py-16 px-6 max-w-4xl mx-auto flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-16">
+        <div class="relative w-full max-w-xs md:max-w-sm shrink-0 flex flex-col items-center">
+            <div class="aspect-[3/4] w-full rounded-2xl bg-gray-200 overflow-hidden relative shadow-xl">
+                <img src="https://i.ibb.co.com/0RT1yKgL/Chat-GPT-Image-Feb-9-2026-12-28-35-PM.png"
+                    alt="Dr. Sarah Hensley" class="w-full h-full object-cover object-top" />
+            </div>
+            <div class="text-center leading-tight mt-4 flex flex-col gap-1.5">
+                <p class="text-sm font-semibold text-[#262420]/80">Dr. Sarah Hensley</p>
+                <p class="text-xs text-gray-500">Relationship Coach, Doctor of Social Psychology</p>
+            </div>
+            <div class="absolute -bottom-6 -right-6 w-24 h-24 bg-[#E8EFE9] rounded-full -z-10"></div>
+            <div class="absolute -top-6 -left-6 w-24 h-24 border-2 border-[#B76A59]/20 rounded-full -z-10"></div>
+        </div>
+
+        <div class="flex-1 text-center md:text-left">
+            <h2 class="font-serif text-3xl mb-6">Why traditional advice fails</h2>
+            <p class="text-gray-600 mb-6 leading-relaxed">
+                Most couples wait 6 years before seeking help, and then spend months in talk therapy venting about the
+                past.
+                <br /><br />
+                <strong>I don't do "venting sessions."</strong>
+            </p>
+            <p class="text-gray-600 mb-8 leading-relaxed">
+                As a Doctor of Social Psychology, I use attachment theory to identify the root mechanics of your dynamic
+                instantly. We don't need to spend years talking. We need to change the <em>way</em> you relate, right
+                now.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                <div class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B76A59" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    Ph.D. Social Psychology
+                </div>
+                <div class="flex items-center gap-2 text-sm font-medium text-gray-700">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B76A59" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    220K+ Community
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section id="method-section" class="py-14 md:py-20 px-6 bg-[#262420] text-[#FBF8F3] rounded-3xl mx-4 md:mx-8">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="font-serif text-3xl md:text-4xl mb-6">Here is what happens in a 1:1 call</h2>
+            <p class="text-gray-300 mb-12 max-w-2xl mx-auto">
+                This isn't just "advice." It is a strategic intervention to save your relationship.
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-8 text-left">
+                <div class="border-l border-[#B76A59] pl-6 py-2">
+                    <span class="text-[#B76A59] font-serif italic text-lg mb-2 block">Step 01</span>
+                    <h3 class="text-xl font-medium mb-3">Identify The Cycle</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">We will map out exactly why you trigger each other
+                        and unmask the 'Anxious-Avoidant' dance playing out.</p>
+                </div>
+
+                <div class="border-l border-[#B76A59] pl-6 py-2">
+                    <span class="text-[#B76A59] font-serif italic text-lg mb-2 block">Step 02</span>
+                    <h3 class="text-xl font-medium mb-3">Interrupt The Conflict</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">I'll give you the specific scripts and tools to
+                        stop a fight in it's tracks before it spirals into silence or shouting.</p>
+                </div>
+
+                <div class="border-l border-[#B76A59] pl-6 py-2">
+                    <span class="text-[#B76A59] font-serif italic text-lg mb-2 block">Step 03</span>
+                    <h3 class="text-xl font-medium mb-3">Rebuild Safety</h3>
+                    <p class="text-gray-400 text-sm leading-relaxed">Learn how to communicate your needs in a way that
+                        actually makes your partner want to lean in, not run away.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials-section" class="py-12 md:py-16 px-6 bg-[#FBF8F3]">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-center font-serif text-3xl md:text-4xl text-[#262420] mb-6 md:mb-8">Testimonials</h2>
+            <div id="testimonials-viewport" class="testimonial-viewport relative px-1">
+                <div id="testimonials-track" class="flex gap-4 md:gap-5 transition-transform duration-700 ease-out">
+                    <article
+                        class="w-[88%] md:w-[74%] shrink-0 bg-white border border-[#E8E1D7] rounded-2xl p-6 shadow-sm min-h-[230px]">
+                        <div class="text-[#B76A59] text-sm tracking-[0.1em]">★★★★★</div>
+                        <h3 class="mt-3 font-serif text-2xl text-[#262420]">Review request from episode 32 for group
+                            spot</h3>
+                        <p class="mt-3 text-gray-600 leading-relaxed text-sm testimonial-text">"I was immediately drawn
+                            to your content because it resonated so deeply with my own personal experience. I continue
+                            to
+                            follow you and listen to your podcasts, and I truly see you as an incredible wealth of
+                            knowledge. Today's episode on the
+                            female dismissive avoidant was especially impactful for me. I've always identified as
+                            dismissive avoidant, yet so much
+                            of the conversation centers on men, so hearing this perspective felt incredibly validating
+                            and reassuring.
+
+                            I've felt hesitant about joining a group because I worry I might be older than most
+                            participants, having been in a
+                            30-year marriage, and I sometimes wonder if I would fit in. Still, I feel drawn to your
+                            groups and want to be brave
+                            enough to try because your work makes me feel deeply understood in a way no other coach or
+                            therapist I follow has.
+
+                            I currently do my own work with an IFS counselor, which I value greatly, but the clarity and
+                            depth you bring to
+                            understanding avoidant attachment has helped me see myself and my patterns in an entirely
+                            new way. This is truly your
+                            niche, and the work you are doing is meaningful, validating, and transformative. Thank you
+                            for the care, insight, and
+                            dedication you put into everything you offer."</p>
+                    </article>
+                    <article
+                        class="w-[88%] md:w-[74%] shrink-0 bg-white border border-[#E8E1D7] rounded-2xl p-6 shadow-sm min-h-[230px]">
+                        <div class="text-[#B76A59] text-sm tracking-[0.1em]">★★★★★</div>
+                        <h3 class="mt-3 font-serif text-2xl text-[#262420]">A few comments about Coach Elizabeth</h3>
+                        <p class="mt-3 text-gray-600 leading-relaxed text-sm testimonial-text">"It was pure desperation
+                            that I landed me at “The Love Doc” website. Impressed with information shared on Facebook by
+                            Dr.
+                            Sarah Hensley I was motivated to investigate the resources she was mentioning. Being in a
+                            long term marriage of 52 years
+                            but experiencing significant discord, and not aware of something called attachment styles, I
+                            was now irretrievably down
+                            a rabbit hole that I would not exit soon.
+                            I instinctively knew one on one, face to face coaching was what I needed. Immediately I was
+                            drawn to the kind face and
+                            welcoming smile of relationship coach, Elizabeth Pomeroy. I booked a 55 minute session with
+                            her, provided a letter of
+                            introduction prior to the session, but had no idea what to expect. I only knew I needed
+                            help, professional help. Prior
+                            to my first session, I completed the “Achieving You Secure Attachment” program at
+                            TheLovDoc.com so I would have some
+                            basis for discussion in that first session. Still, I wondered what kind of “therapy” would
+                            this be? Previous attempts
+                            working with a therapist have been less than rewarding for me.
+                            To my surprise there was no therapy, only a gentle compassionate listener who confirmed my
+                            anxious attachment (and my
+                            wife’s dismissive avoidant style). Coach Elizabeth reassured me acknowledging through her
+                            empathetic words of
+                            explanation that my emotions, feelings, and pain were real and were accurate. By the end of
+                            that session, I wanted to
+                            understand more, much more. Coach Elizabeth explained that together we could put the pieces
+                            together to paint my picture
+                            so I could learn about the dynamics in my marriage. I discovered I was going to learn skills
+                            from her to navigate my
+                            marriage and survive it one way or another. And we would figure that out together. That was
+                            a hopefulness I did not have
+                            when I started my journey with Coach Elizabeth.
+                            Immediately I realized I was working with a qualified professional who could feel and
+                            understand what I was going
+                            through in my marriage and offer real solutions. That instantly signaled to me this would
+                            not be an experience like
+                            previous traditional therapy I had. Coach Elizabeth is calm yet very confident when she
+                            engages. She listens to feel and
+                            understand accurately. She does not sugar coat, saying what needs to be said but delivers in
+                            a way that is easy to
+                            accept. After unpacking the history and dynamics of my long term marriage she simply said,
+                            “you are in a very toxic
+                            relationship.” This was not therapy, just plain professional honesty which set the course
+                            for the first practical
+                            solutions for my situation. I am working through that with Coach Elizabeth and her expert
+                            guidance. I believe I am
+                            making the correct decisions, and she is suggesting the map to follow to complete my
+                            journey.
+                            I’ve scheduled my fifth session with Coach Elizabeth. I will meet with her until I no longer
+                            need her guidance. Her
+                            professional assistance in this very personal matter has provided me a path to resolution
+                            that will be the best possible
+                            outcome. Additionally, and unexpectedly, my personal interaction with Coach Elizabeth has
+                            afforded me a personal growth
+                            experience I did not realize would occur. I have truly felt cared for by her, not just a
+                            slot in her schedule. I refer
+                            to her as my “relationship angel.” Because with each session her new insights, suggestions,
+                            genuine and honest feedback
+                            has given me the confidence to manage my situation and make the best possible decisions for
+                            myself.
+                            Much gratitude and many thanks Coach Elizabeth for your support. Jim Sarbacker"</p>
+                    </article>
+                    <article
+                        class="w-[88%] md:w-[74%] shrink-0 bg-white border border-[#E8E1D7] rounded-2xl p-6 shadow-sm min-h-[230px]">
+                        <div class="text-[#B76A59] text-sm tracking-[0.1em]">★★★★★</div>
+                        <h3 class="mt-3 font-serif text-2xl text-[#262420]">Happy, Healthy & Whole!</h3>
+                        <p class="mt-3 text-gray-600 leading-relaxed text-sm testimonial-text">"Gaining insight,
+                            increasing my capacity, trusting in myself, understanding my triggers, being attracted to
+                            the green
+                            flags, and STAYING when it gets real! So many areas that needed my increased attention and
+                            effort. It has not been easy
+                            but Elizabeth has been incredibly supportive, effective, dedicated and knowledgeable
+                            throughout the process! She has
+                            also given me tangible action steps and communication strategies along the way to help me
+                            move towards healthy, secure
+                            attachment. So grateful for all the work and I'm finally feeling like myself again! Happy,
+                            healthy and whole"</p>
+                    </article>
+                    <article
+                        class="w-[88%] md:w-[74%] shrink-0 bg-white border border-[#E8E1D7] rounded-2xl p-6 shadow-sm min-h-[230px]">
+                        <div class="text-[#B76A59] text-sm tracking-[0.1em]">★★★★★</div>
+                        <h3 class="mt-3 font-serif text-2xl text-[#262420]">Life Changing!</h3>
+                        <p class="mt-3 text-gray-600 leading-relaxed text-sm testimonial-text">"My partner and I started
+                            working with Elizabeth after completing Dr.Hensley's group. We really wanted to make
+                            progress
+                            quickly - and were at a place in our lives, and at a time when we really needed clarity,
+                            safety, and tools that actually
+                            worked in real life—not just theory. What sets the program, and specifically Elizabeth apart
+                            is how deeply she
+                            understands attachment patterns and how they show up in everyday relationships.
+
+                            She doesn’t just explain attachment—she helps you feel it, notice it in your body, and
+                            change it in real time. Her
+                            guidance is compassionate but not fluffy, insightful without being overwhelming, and always
+                            grounded in what’s actually
+                            happening in your life.
+
+                            I’ve learned how to recognize my patterns, regulate my nervous system, communicate more
+                            clearly, and repair instead of
+                            spiral. The shifts haven’t just been intellectual—they’ve been lived. My relationship feels
+                            safer, steadier, and more
+                            honest because of the work we’ve done.
+
+                            If you’re tired of repeating the same emotional cycles and want real, sustainable change,
+                            Elizabeth is someone who truly
+                            knows how to guide you there—with depth, skill, and a lot of heart."</p>
+                    </article>
+                </div>
+            </div>
+            <div class="flex items-center justify-center gap-2 mt-5" id="testimonial-dots">
+                <button type="button" class="w-2.5 h-2.5 rounded-full bg-[#B76A59]/80" aria-label="Go to testimonial 1"
+                    onclick="goToTestimonial(0)"></button>
+                <button type="button" class="w-2.5 h-2.5 rounded-full bg-[#B76A59]/30" aria-label="Go to testimonial 2"
+                    onclick="goToTestimonial(1)"></button>
+                <button type="button" class="w-2.5 h-2.5 rounded-full bg-[#B76A59]/30" aria-label="Go to testimonial 3"
+                    onclick="goToTestimonial(2)"></button>
+                <button type="button" class="w-2.5 h-2.5 rounded-full bg-[#B76A59]/30" aria-label="Go to testimonial 4"
+                    onclick="goToTestimonial(3)"></button>
+            </div>
+            <div class="text-center mt-6">
+                <a href="https://thelovedoc.com/testimonials/" target="_blank" rel="noopener noreferrer"
+                    class="text-sm font-medium text-[#B76A59] hover:text-[#995345] transition-colors">
+                    Read More Testimonials
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Final CTA / Booking Section -->
+    <section id="booking-section" class="py-14 md:py-20 px-6 max-w-3xl mx-auto text-center">
+        <h2 class="font-serif text-4xl md:text-5xl mb-5 text-[#262420]">Let's fix this.</h2>
+        <p class="text-base md:text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
+            Your relationship doesn't have to stay stuck in the same painful cycle. Start with one focused next step.
+        </p>
+        <a href="https://courses.thelovedoc.com/coaching-menu"
+            class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-[#B76A59] hover:bg-[#995345] text-white text-lg font-medium rounded-full shadow-lg shadow-[#B76A59]/20 transition-all duration-300 active:scale-[0.98]"
+            data-umami-event="CTA - Footer">
+            View Coaching Options
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <!-- <footer class="py-12 px-6 border-t border-[#E8E1D7] text-center md:text-left bg-white">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
+            <div>
+                <span class="font-serif text-xl font-bold tracking-wide text-[#262420]">Dr. Sarah Hensley</span>
+                <p class="text-xs text-gray-500 mt-2">© 2024 Dr. Sarah Hensley. All rights reserved.</p>
+            </div>
+            <div class="flex gap-6 text-sm text-gray-500">
+                <a href="#" class="hover:text-[#B76A59]">Privacy Policy</a>
+                <a href="#" class="hover:text-[#B76A59]">Terms of Service</a>
+                <a href="#" class="hover:text-[#B76A59] flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                    Instagram
+                </a>
+            </div>
+        </div>
+    </footer> -->
+
+    <!-- JavaScript -->
+    <script>
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        function smoothScrollToElement(element, duration = 900) {
+            const startY = window.pageYOffset;
+            const targetY = element.getBoundingClientRect().top + window.pageYOffset - 80;
+            const distance = targetY - startY;
+            const startTime = performance.now();
+
+            function step(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = easeInOutCubic(progress);
+                window.scrollTo(0, startY + distance * eased);
+                if (progress < 1) requestAnimationFrame(step);
+            }
+
+            requestAnimationFrame(step);
+        }
+
+        function scrollToSection(event, id) {
+            if (event) event.preventDefault();
+            const target = document.getElementById(id);
+            if (target) smoothScrollToElement(target);
+        }
+
+        function scrollToCTA() {
+            const target = document.getElementById('booking-section');
+            if (target) smoothScrollToElement(target);
+        }
+
+        let testimonialIndex = 0;
+        let testimonialTimeout;
+        let swipeStartX = 0;
+        let swipeCurrentX = 0;
+        let isPointerDown = false;
+
+        function getTestimonialMetrics() {
+            const viewport = document.getElementById('testimonials-viewport');
+            const firstCard = document.querySelector('#testimonials-track article');
+            if (!viewport || !firstCard) return { step: 0, maxIndex: 0 };
+
+            const trackStyle = window.getComputedStyle(document.getElementById('testimonials-track'));
+            const gap = parseFloat(trackStyle.columnGap || trackStyle.gap || '0');
+            const step = firstCard.getBoundingClientRect().width + gap;
+            const maxIndex = document.querySelectorAll('#testimonials-track article').length - 1;
+            return { step, maxIndex };
+        }
+
+        function updateTestimonialDots(index) {
+            const dots = document.querySelectorAll('#testimonial-dots button');
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('bg-[#B76A59]/80', i === index);
+                dot.classList.toggle('bg-[#B76A59]/30', i !== index);
+            });
+        }
+
+        function getSlideDuration() {
+            const cards = document.querySelectorAll('#testimonials-track article .testimonial-text');
+            const current = cards[testimonialIndex];
+            if (!current) return 4200;
+            const length = current.textContent.trim().length;
+            return Math.min(9000, Math.max(4200, length * 32));
+        }
+
+        function scheduleNextTestimonial() {
+            clearTimeout(testimonialTimeout);
+            testimonialTimeout = setTimeout(() => {
+                const { maxIndex } = getTestimonialMetrics();
+                testimonialIndex = testimonialIndex >= maxIndex ? 0 : testimonialIndex + 1;
+                goToTestimonial(testimonialIndex, true);
+            }, getSlideDuration());
+        }
+
+        function goToTestimonial(index, restartTimer = true) {
+            const track = document.getElementById('testimonials-track');
+            if (!track) return;
+            const { step, maxIndex } = getTestimonialMetrics();
+            testimonialIndex = Math.max(0, Math.min(index, maxIndex));
+            track.style.transform = `translateX(-${testimonialIndex * step}px)`;
+            updateTestimonialDots(testimonialIndex);
+            if (restartTimer) scheduleNextTestimonial();
+        }
+
+        function handlePointerStart(clientX) {
+            isPointerDown = true;
+            swipeStartX = clientX;
+            swipeCurrentX = clientX;
+            clearTimeout(testimonialTimeout);
+        }
+
+        function handlePointerMove(clientX) {
+            if (!isPointerDown) return;
+            swipeCurrentX = clientX;
+        }
+
+        function handlePointerEnd() {
+            if (!isPointerDown) return;
+            isPointerDown = false;
+            const deltaX = swipeCurrentX - swipeStartX;
+            const swipeThreshold = 50;
+
+            if (deltaX <= -swipeThreshold) {
+                goToTestimonial(testimonialIndex + 1, true);
+                return;
+            }
+
+            if (deltaX >= swipeThreshold) {
+                goToTestimonial(testimonialIndex - 1, true);
+                return;
+            }
+
+            scheduleNextTestimonial();
+        }
+
+        function bindTestimonialSwipe() {
+            const viewport = document.getElementById('testimonials-viewport');
+            if (!viewport) return;
+
+            viewport.addEventListener('touchstart', (e) => handlePointerStart(e.touches[0].clientX), { passive: true });
+            viewport.addEventListener('touchmove', (e) => handlePointerMove(e.touches[0].clientX), { passive: true });
+            viewport.addEventListener('touchend', handlePointerEnd);
+
+            viewport.addEventListener('mousedown', (e) => handlePointerStart(e.clientX));
+            viewport.addEventListener('mousemove', (e) => handlePointerMove(e.clientX));
+            viewport.addEventListener('mouseleave', handlePointerEnd);
+            viewport.addEventListener('mouseup', handlePointerEnd);
+        }
+
+        function startTestimonialsCarousel() {
+            goToTestimonial(0, false);
+            bindTestimonialSwipe();
+            window.addEventListener('resize', () => goToTestimonial(testimonialIndex, false));
+        }
+
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+                menu.classList.add('flex');
+                menuIcon.classList.add('hidden');
+                closeIcon.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+                menu.classList.remove('flex');
+                menuIcon.classList.remove('hidden');
+                closeIcon.classList.add('hidden');
+            }
+        }
+
+        function closeMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+
+            menu.classList.add('hidden');
+            menu.classList.remove('flex');
+            menuIcon.classList.remove('hidden');
+            closeIcon.classList.add('hidden');
+        }
+
+        startTestimonialsCarousel();
+    </script>
+</body>
+
+</html>
